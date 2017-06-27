@@ -19,13 +19,13 @@ test("addition", t => {
 However, this ignores most of AVA's advantages: JSVerify will run the `forall` body an unknown number of times, so we
 can't use test planning and JSVerify's assertion library.
 
-Instead, `ava-jsverify` creates an environment that takes advantage of AVA's power.
+Instead, `ava-verify` creates an environment that takes advantage of AVA's power.
 
 ```js
-// Require `ava` yourself if you have tests that don't use `ava-jsverify`, but `ava-jsverify` will require `ava` itself.
+// Require `ava` yourself if you have tests that don't use `ava-verify`, but `ava-verify` will require `ava` itself.
 // const test = require("ava");
 const jsc = require("jsverify");
-jsc.ava = require("ava-jsverify");
+jsc.ava = require("ava-verify");
 
 jsc.ava({
   suite: "addition",
@@ -40,12 +40,12 @@ jsc.ava({
 });
 ```
 
-Behind the scenes, `ava-jsverify` will create 50 (`runs`) separate `test()` instances, one for each JSVerify run
+Behind the scenes, `ava-verify` will create 50 (`runs`) separate `test()` instances, one for each JSVerify run
 requested.
 Each instance will generate instances of the given JSVerify arbitraries (`jsc.int`), set it's title based on `title`,
 and run the given test body.
 
-If any of the instances fail, `ava-jsverify` will shrink the arbitraries and rerun the test body, increasing `t.plan`
+If any of the instances fail, `ava-verify` will shrink the arbitraries and rerun the test body, increasing `t.plan`
 for you.
 
 When the test has been shrunk as far as possible while still failing, the last failure will appear in the console
@@ -53,7 +53,7 @@ without any JSVerify information - [power-assert][] will display values for `a`,
 
 On failure, an internal AVA `test` block (named `${suite} JSVerify Suite`) will contain the JSVerify information,
 including the values of each arbitrary, and the number of shrinks used to produce the final failing case.
-If no tests are failing, `ava-jsverify` will hide this internal test block from `ava`.
+If no tests are failing, `ava-verify` will hide this internal test block from `ava`.
 
 The output that AVA displays is completely customizable!
 Want the 50 passing runs to each be counted as a successful test?  Set `passing` to `"show"`.  Want it counted as a
@@ -68,6 +68,27 @@ Alternatively, `firstFail` can be set to `"hide"` to only show the JSVerify info
 
 Each of the configuration options mentioned above, as well as a bunch more that were omitted, are described in much more
 detail in the documentation.
+
+## Installation
+
+```sh
+npm install --save-dev ava-verify
+```
+
+## Usage
+
+Require `ava-verify`:
+
+```js
+const jsc = require("jsverify");
+jsc.ava = require("ava-verify");
+```
+(You can replace `jsc.ava` with any variable)
+
+`jsc.ava` is a function that allows you to call the `AVAVerify` class without using `new`.  Any arguments passed to
+the exported function will be handed to the `AVAVerify` class.
+
+You can directly access the class through `require("ava-verify/AVAVerify")`, or `require("ava-verify").AVAVerify`.
 
 [JSVerify]: https://github.com/jsverify/jsverify
 [AVA]: https://github.com/avajs/ava

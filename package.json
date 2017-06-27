@@ -1,0 +1,28 @@
+{
+  "name": "ava-verify",
+  "version": "0.0.0",
+  "description": "JSVerify plugin for AVA",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rweda/ava-verify.git"
+  },
+  "author": "Redwood EDA (http://redwoodeda.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rweda/ava-verify/issues"
+  },
+  "homepage": "https://github.com/rweda/ava-verify#readme",
+  "peerDependencies": {
+    "ava": "^0.19.1",
+    "jsverify": "^0.8.2"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "jsverify": "^0.8.2"
+  }
+}
