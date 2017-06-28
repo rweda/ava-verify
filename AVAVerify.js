@@ -1,6 +1,8 @@
 const AVAVerifyConfig = require("./config");
 const jsverify = require("jsverify");
 const assert = require("assert");
+const FailedTestError = require("./lib/FailedTestError");
+const TestDetails = require("./lib/TestDetails");
 
 let unnamedSuites = 0;
 
@@ -60,23 +62,59 @@ class AVAVerify {
   }
 
   /**
+   * Shrink and retry a failing test.
+   * @param {Test} t the `Test` object from an AVA test
+   * @param {TestDetails} details the details about the current test.
+   * @return {Promise} resolves when testing is complete.
+   * @todo Implement.
+  */
+  retryBody(t, details) {
+
+  }
+
+  /**
    * The contents to use inside an AVA `test` block to run a test instance.
    * @param {Number} i the test index
-   * @todo Implement.
-   * @todo Document internal `_avaVerify` object.  Probably create a `typedef`.
+   * @todo Publicize `TestDetails` object being in `t.context` (warn that it is unstable)
    * @return {Function} the `test` block contents.
   */
   testBody(i) {
     return (t) => {
-      const details = {
-        shrink: true,
+      const details = new TestDetails({
         verify: this,
         index: i,
-      };
+      });
       t.context._avaVerify = details;
       return this.constructor
         .genArbs(this.opts.size, this.arbs)
-        .then(vals => this.body(t, ...vals));
+        .then(vals => details.storeFirstValues(vals))
+        .then(vals => this.body(t, ...vals))
+        .then(() => {
+          if(t.assertError || t.calledEnd) {
+            throw new FailedTestError();
+          }
+          // TODO: broadcast test success
+        })
+        .catch(err => {
+          details.failed = true;
+          details.failureDetails = this.constructor.getFailureDetails(t);
+          // TODO: catch any other test failures?  err.name === AssertionError?
+          const retriable = err instanceof FailedTestError;
+          if(details.shrink && retriable) {
+            return this
+              .retryBody(t, details)
+              .then(() => this.constructor.restoreFailureDetails(t, details.failureDetails))
+              .then(() => {
+                //TODO: broadcast test finish
+                //TODO: if test rejected above, reject again?
+                return true;
+              });
+          }
+          else {
+            //TODO: broadcast test finish
+            throw err;
+          }
+        });
     };
   }
 
