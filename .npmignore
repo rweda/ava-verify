@@ -1,1 +1,6 @@
+.nyc_output/
+coverage/
+examples/
 test/
+.codecov.yml
+.travis.yml
