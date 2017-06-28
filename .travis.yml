@@ -3,3 +3,7 @@ language: node_js
 node_js:
   - 6
   - node
+
+after_success:
+  - $(npm bin)/nyc report --reporter=lcovonly
+  - $(npm bin)/codecov

@@ -4,7 +4,17 @@
   "description": "JSVerify plugin for AVA",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "NODE_PATH=. nyc ava"
+  },
+  "nyc": {
+    "reporter": [
+      "html",
+      "text-summary"
+    ],
+    "exclude": [
+      "examples/**",
+      "test/**/*.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -20,9 +30,19 @@
     "ava": "^0.19.1",
     "jsverify": "^0.8.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "modconf": "0.0.1"
+  },
   "devDependencies": {
+    "@rweda/jsverify-generators": "^0.1.0",
     "ava": "^0.19.1",
-    "jsverify": "^0.8.2"
+    "child-process-promise": "^2.2.1",
+    "codecov": "^2.2.0",
+    "fs-extra": "^3.0.1",
+    "jsverify": "^0.8.2",
+    "mock-require": "^2.0.2",
+    "nyc": "^11.0.3",
+    "promise-defer": "^1.0.0",
+    "promise-delay": "^2.1.0"
   }
 }
