@@ -1,5 +1,9 @@
 # JSVerify Plugin for AVA
 
+[![npm](https://img.shields.io/npm/v/ava-verify.svg)](https://www.npmjs.com/package/ava-verify)
+[![Build Status](https://travis-ci.org/rweda/ava-verify.svg?branch=master)](https://travis-ci.org/rweda/ava-verify)
+[![Codecov](https://img.shields.io/codecov/c/gh/rweda/ava-verify.svg)](https://codecov.io/gh/rweda/ava-verify)
+
 [JSVerify][] test runner that takes advantage of [AVA][]'s power.
 
 It's possible to run [JSVerify][] tests inside [AVA][]:
