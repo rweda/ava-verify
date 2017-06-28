@@ -68,10 +68,12 @@ class AVAVerify {
   */
   testBody(i) {
     return (t) => {
-      t.context._avaVerify = {
+      const details = {
+        shrink: true,
         verify: this,
         index: i,
       };
+      t.context._avaVerify = details;
       return this.constructor
         .genArbs(this.opts.size, this.arbs)
         .then(vals => this.body(t, ...vals));
