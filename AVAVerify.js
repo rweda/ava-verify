@@ -63,11 +63,17 @@ class AVAVerify {
    * The contents to use inside an AVA `test` block to run a test instance.
    * @param {Number} i the test index
    * @todo Implement.
+   * @todo Document internal `_avaVerify` object.  Probably create a `typedef`.
    * @return {Function} the `test` block contents.
   */
   testBody(i) {
     return (t) => {
-      return this.constructor.genArbs(this.opts.size, this.arbs)
+      t.context._avaVerify = {
+        verify: this,
+        index: i,
+      };
+      return this.constructor
+        .genArbs(this.opts.size, this.arbs)
         .then(vals => this.body(t, ...vals));
     };
   }
