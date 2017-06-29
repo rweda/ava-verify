@@ -1,6 +1,6 @@
 {
   "name": "ava-verify",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "JSVerify plugin for AVA",
   "main": "index.js",
   "scripts": {
