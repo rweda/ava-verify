@@ -1,10 +1,22 @@
 # JSVerify Plugin for AVA
 
+Futuristic test features from [AVA][] integrated with [JSVerify][] test-case generation.
+
 [![npm](https://img.shields.io/npm/v/ava-verify.svg)](https://www.npmjs.com/package/ava-verify)
 [![Build Status](https://travis-ci.org/rweda/ava-verify.svg?branch=master)](https://travis-ci.org/rweda/ava-verify)
 [![Codecov](https://img.shields.io/codecov/c/gh/rweda/ava-verify.svg)](https://codecov.io/gh/rweda/ava-verify)
 
-[JSVerify][] test runner that takes advantage of [AVA][]'s power.
+## Features
+
+- Runs generated test-cases in parallel
+- ![][in-progress] Shrinking failing test cases to produce small counter-examples (#1)
+- ![][planned] Full JSVerify output, including seed, counter-examples, etc. (#12)
+- ![][soon] Each test case can be given a unique name based on the generated values (#2)
+
+Many more features are planned.
+See the [issue tracker](https://github.com/rweda/ava-verify/issues) for the current list.
+
+## Background
 
 It's possible to run [JSVerify][] tests inside [AVA][]:
 
@@ -44,34 +56,20 @@ jsc.ava({
 });
 ```
 
-Behind the scenes, `ava-verify` will create 50 (`runs`) separate `test()` instances, one for each JSVerify run
-requested.
-Each instance will generate instances of the given JSVerify arbitraries (`jsc.int`), set it's title based on `title`,
-and run the given test body.
+Given the **options**, a list of **arbitraries** to generate, and a **test body**,
+`ava-verify` will create individual AVA tests for each **test instance** specified (by the `runs` option).
 
-If any of the instances fail, `ava-verify` will shrink the arbitraries and rerun the test body, increasing `t.plan`
-for you.
+As each test instance is in it's own AVA test, you can use AVA's test planning and [power-assert][] interface
+to produce descriptive assertion messages.
 
-When the test has been shrunk as far as possible while still failing, the last failure will appear in the console
-without any JSVerify information - [power-assert][] will display values for `a`, `b`, `a + b`, and `c`.
+[![][in-progress]](#1) When each test instance fails, the generated variables will be shrunk and retried to produce
+smaller counter-examples according to the JSVerify `shrink` system.
+The internal AVA variables will be reset, so test planning and previous failures won't affect the retried test.
 
-On failure, an internal AVA `test` block (named `${suite} JSVerify Suite`) will contain the JSVerify information,
-including the values of each arbitrary, and the number of shrinks used to produce the final failing case.
-If no tests are failing, `ava-verify` will hide this internal test block from `ava`.
+[![][planned]](#9) Optionally, subsequent test failures can be canceled and hidden, reducing the amount of output.
 
-The output that AVA displays is completely customizable!
-Want the 50 passing runs to each be counted as a successful test?  Set `passing` to `"show"`.  Want it counted as a
-single passing test?  Set `passing` to `"hide"`, and each of the runs will be hidden from AVA's output, and the internal
-test block (with the suite title) will be shown as passing.
-
-By default, when multiple runs fail, only the first failure is shown - the internal `test` block will display the
-JSVerify details, the failing block will be displayed, and all subsequent failures will be hidden.
-(passing runs will be shown if `passing` is set to `"show"`)
-Alternatively, `firstFail` can be set to `"hide"` to only show the JSVerify information, or `subseqFail` can be set to
-`"show"` to show each failing test.
-
-Each of the configuration options mentioned above, as well as a bunch more that were omitted, are described in much more
-detail in the documentation.
+[![][on-hold]](#14) In addition, successful test cases can be hidden, so the number of successful tests is 1 per test
+suite, instead of 1 for each test case in a test suite.
 
 ## Installation
 
@@ -81,7 +79,7 @@ npm install --save-dev ava-verify
 
 ## Usage
 
-Require `ava-verify`:
+Require `ava-verify` in your tests:
 
 ```js
 const jsc = require("jsverify");
@@ -97,3 +95,7 @@ You can directly access the class through `require("ava-verify/AVAVerify")`, or 
 [JSVerify]: https://github.com/jsverify/jsverify
 [AVA]: https://github.com/avajs/ava
 [power-assert]: https://github.com/power-assert-js/power-assert
+[planned]: https://img.shields.io/badge/status-planned-red.svg
+[soon]: https://img.shields.io/badge/status-coming_soon-orange.svg
+[in-progress]: https://img.shields.io/badge/status-in_progress-yellow.svg
+[on-hold]: https://img.shields.io/badge/status-on_hold-lightgrey.svg
