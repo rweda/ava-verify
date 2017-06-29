@@ -9,9 +9,9 @@ Futuristic test features from [AVA][] integrated with [JSVerify][] test-case gen
 ## Features
 
 - Runs generated test-cases in parallel
-- ![][in-progress] Shrinking failing test cases to produce small counter-examples (#1)
-- ![][planned] Full JSVerify output, including seed, counter-examples, etc. (#12)
-- ![][soon] Each test case can be given a unique name based on the generated values (#2)
+- ![][in-progress] Shrinking failing test cases to produce small counter-examples ([#1][])
+- ![][planned] Full JSVerify output, including seed, counter-examples, etc. ([#12][])
+- ![][soon] Each test case can be given a unique name based on the generated values ([#2][])
 
 Many more features are planned.
 See the [issue tracker](https://github.com/rweda/ava-verify/issues) for the current list.
@@ -62,7 +62,7 @@ Given the **options**, a list of **arbitraries** to generate, and a **test body*
 As each test instance is in it's own AVA test, you can use AVA's test planning and [power-assert][] interface
 to produce descriptive assertion messages.
 
-[![][in-progress]](#1) When each test instance fails, the generated variables will be shrunk and retried to produce
+[![][in-progress]][#1] When each test instance fails, the generated variables will be shrunk and retried to produce
 smaller counter-examples according to the JSVerify `shrink` system.
 The internal AVA variables will be reset, so test planning and previous failures won't affect the retried test.
 
@@ -92,6 +92,11 @@ the exported function will be handed to the `AVAVerify` class.
 
 You can directly access the class through `require("ava-verify/AVAVerify")`, or `require("ava-verify").AVAVerify`.
 
+[#1]:  https://github.com/rweda/ava-verify/issues/1
+[#2]:  https://github.com/rweda/ava-verify/issues/2
+[#9]:  https://github.com/rweda/ava-verify/issues/9
+[#12]: https://github.com/rweda/ava-verify/issues/12
+[#14]: https://github.com/rweda/ava-verify/issues/14
 [JSVerify]: https://github.com/jsverify/jsverify
 [AVA]: https://github.com/avajs/ava
 [power-assert]: https://github.com/power-assert-js/power-assert
