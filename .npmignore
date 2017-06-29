@@ -4,3 +4,4 @@ examples/
 test/
 .codecov.yml
 .travis.yml
+CHANGELOG.md
